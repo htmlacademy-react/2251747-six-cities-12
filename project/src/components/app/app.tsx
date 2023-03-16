@@ -6,32 +6,40 @@ import Favorites from '../../pages/favorites/favorites';
 import Property from '../../pages/property/property';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
+import { Offers } from '../../types/offers';
+import { Reviews } from '../../types/reviews';
+import Header from '../header/header';
 
 type AppScreenProps = {
   placesCount: number;
+  offers: Offers;
+  reviews: Reviews;
 }
 
-function App({placesCount}: AppScreenProps): JSX.Element {
+function App({placesCount, offers, reviews}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
+      <Header offers={offers} />
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<FirstScreen placesCount={placesCount} />}
+          element={<FirstScreen offers={offers} placesCount={placesCount} />}
         />
         <Route
           path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <Favorites />
+              <Favorites
+                offers={offers.filter((offer) => offer.isFavorite)}
+              />
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Room}
-          element={<Property />}
+          element={<Property offers={offers} reviews={reviews}/>}
         />
         <Route
           path={AppRoute.Login}
