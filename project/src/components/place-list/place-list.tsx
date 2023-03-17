@@ -1,4 +1,4 @@
-import { useState } from 'react';
+//import { useState } from 'react';
 import {Offer, Offers } from '../../types/offers';
 import PlaceCard from '../place-card/place-card';
 
@@ -7,9 +7,9 @@ type PlaceListProps = {
 }
 
 function PlaceList ({offers} : PlaceListProps) : JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<Offer>();
+  //const [activeOffer, setActiveOffer] = useState<Offer>();
   const mouseOverHandler = (offer: Offer) => {
-    setActiveOffer(offer);
+    //setActiveOffer(offer);
   };
 
   return (
