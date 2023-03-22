@@ -1,11 +1,13 @@
 import PlaceList from '../../components/place-list/place-list';
 import { Offers } from '../../types/offers';
+import Map from '../../components/map/map';
 
 type FirstScreenProps = {
   placesCount: number;
   offers: Offers;
 }
 function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
+  const city = offers[0].city;
 
   return (
     <div className="page page--gray page--main">
@@ -73,7 +75,10 @@ function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
               />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map
+                city={city}
+                locations={offers.map((offer) => offer.location)}
+              />
             </div>
           </div>
         </div>
