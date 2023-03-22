@@ -3,11 +3,11 @@ import { Offer } from '../../types/offers';
 
 type PlaceCardProps = {
  offer: Offer;
- isFavoriteCard?: boolean;
  onMouseOverFn?: CallableFunction;
+ prefixClass: string;
 }
 
-function PlaceCard ({offer, isFavoriteCard, onMouseOverFn} : PlaceCardProps) : JSX.Element {
+function PlaceCard ({offer, onMouseOverFn, prefixClass} : PlaceCardProps) : JSX.Element {
 
   const {isPremium, price, previewImage, rating, title, type} = offer;
 
@@ -18,14 +18,14 @@ function PlaceCard ({offer, isFavoriteCard, onMouseOverFn} : PlaceCardProps) : J
   };
 
   return (
-    <article onMouseOver={onMouseOv} className={`${isFavoriteCard ? 'favorites__card' : 'cities__card'} place-card`}>
+    <article onMouseOver={onMouseOv} className={`${prefixClass}__card place-card`}>
       {isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>
       </div>}
-      <div className={`${isFavoriteCard ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
+      <div className={`${prefixClass}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${offer.id}`}>
-          <img className="place-card__image" src={previewImage} width={`${isFavoriteCard ? '150' : '260'}`} height={`${isFavoriteCard ? '110' : '200'}`} alt="Place img"/>
+          <img className="place-card__image" src={previewImage} width={`${prefixClass === 'favorites' ? '150' : '260'}`} height={`${prefixClass === 'favorites' ? '110' : '200'}`} alt="Place img"/>
         </Link>
       </div>
       <div className="place-card__info">
