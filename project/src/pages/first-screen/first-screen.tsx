@@ -72,6 +72,7 @@ function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
               </form>
               <PlaceList
                 offers={offers}
+                prefixClass="cities"
               />
             </section>
             <div className="cities__right-section">

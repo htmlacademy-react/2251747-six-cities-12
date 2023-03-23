@@ -28,7 +28,7 @@ function Favorites({offers} : FavoritesProps): JSX.Element {
                       <PlaceCard
                         offer={offer}
                         key={offer.id}
-                        isFavoriteCard
+                        prefixClass="favorites"
                       />
                     ))}
                   </div>

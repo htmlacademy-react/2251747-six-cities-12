@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 type MapProps = {
  city: City;
  locations: Location[];
+ isProperty?: boolean;
 };
 
 const defaultCustomIcon = new Icon({
@@ -17,7 +18,7 @@ const defaultCustomIcon = new Icon({
 });
 
 
-function Map({city, locations}: MapProps): JSX.Element {
+function Map({city, locations, isProperty}: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
   const map = useMap(mapRef,city,);
@@ -41,7 +42,7 @@ function Map({city, locations}: MapProps): JSX.Element {
 
 
   return (
-    <section ref={mapRef} className="cities__map map"></section>
+    <section ref={mapRef} className={`${isProperty ? 'property__map' : 'cities__map'} map`}></section>
   );
 }
 export default Map;
