@@ -1,13 +1,44 @@
 import PlaceList from '../../components/place-list/place-list';
 import { Offers } from '../../types/offers';
 import Map from '../../components/map/map';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setCity, setOffers } from '../../store/actions';
+import { getCity, getOffers } from '../../store/selectors';
+import { useEffect } from 'react';
 
 type FirstScreenProps = {
-  placesCount: number;
   offers: Offers;
 }
-function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
-  const city = offers[0].city;
+function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const cities = offers.map((offer) => offer.city);
+  const cityNames = [...new Set(cities.map((c) => c.name))];
+
+  const chooseCity = (name: string) => {
+    const city = cities.find((c) => c.name === name);
+    if (city) {
+      dispatch(setCity(city));
+      const cityOffers = offers.filter((o) => o.city.name === name);
+      dispatch(setOffers(cityOffers));
+    }
+  };
+
+  const setInitialCity = () => {
+    if (cities.length > 0) {
+      if (cities.find((c) => c.name === 'Paris')) {
+        chooseCity('Paris');
+      } else {
+        chooseCity(cities[0].name);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setInitialCity();
+  }, [offers]);
+
+  const cityState = useAppSelector(getCity);
+  const offersState = useAppSelector(getOffers);
 
   return (
     <div className="page page--gray page--main">
@@ -17,36 +48,13 @@ function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="/#">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {cityNames.map((name,index) => (
+                <li key={`${name}-${index.toString()}`} className="locations__item">
+                  <a href="/#" className={`locations__item-link tabs__item tabs__item${cityState?.name === name ? '--active' : ''}`} onClick={(e) => {e.preventDefault(); chooseCity(name);}}>
+                    <span>{name}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </section>
         </div>
@@ -54,7 +62,7 @@ function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in Amsterdam</b>
+              {cityState && <b className="places__found">{offersState.length} places to stay in {cityState?.name}</b>}
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,14 +79,14 @@ function FirstScreen ({placesCount, offers}: FirstScreenProps): JSX.Element {
                 </ul>
               </form>
               <PlaceList
-                offers={offers}
+                offers={offersState}
                 prefixClass="cities"
               />
             </section>
             <div className="cities__right-section">
               <Map
-                city={city}
-                locations={offers.map((offer) => offer.location)}
+                city={cityState}
+                locations={offersState.map((offer) => offer.location)}
               />
             </div>
           </div>

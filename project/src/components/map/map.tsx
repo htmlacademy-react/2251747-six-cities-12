@@ -1,12 +1,12 @@
 import {useRef, useEffect} from 'react';
-import {Icon, Marker} from 'leaflet';
+import {Icon, LatLng, Marker} from 'leaflet';
 import useMap from '../../hooks/map';
 import {City, Location,} from '../../types/offers';
 import {URL_MARKER_DEFAULT} from '../../const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
- city: City;
+ city: City | null;
  locations: Location[];
  isProperty?: boolean;
 };
@@ -36,9 +36,13 @@ function Map({city, locations, isProperty}: MapProps): JSX.Element {
           .addTo(map);
 
       });
+
+      if (city) {
+        map.flyTo(new LatLng(city.location.latitude, city.location.longitude), city.location.zoom);
+      }
     }
 
-  }, [map, locations]);
+  }, [map, locations, city]);
 
 
   return (
