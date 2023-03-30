@@ -5,13 +5,15 @@ import {City,} from '../types/offers';
 function useMap(mapRef: MutableRefObject<HTMLElement | null>,city: City | null): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderRef = useRef<boolean>(false);
+  const defLat = 48.8589466;
+  const defLong = 2.2769953;
 
   useEffect(() => {
     if (mapRef.current !== null && !isRenderRef.current) {
       const instance = new Map(mapRef.current, {
         center: {
-          lat: city !== null ? city.location.latitude : 48.8589466,
-          lng: city !== null ? city.location.longitude : 2.2769953,
+          lat: city !== null ? city.location.latitude : defLat,
+          lng: city !== null ? city.location.longitude : defLong,
         },
         zoom: city !== null ? city.location.zoom : 1,
       });

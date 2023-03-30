@@ -108,7 +108,7 @@ function Property({offers, reviews}: PropertyProps): JSX.Element {
           <Map
             isProperty
             city={city}
-            locations={offers.map((off)=> off.location)}
+            offers={offers}
           />
         </section>
         <div className="container">
