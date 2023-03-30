@@ -14,6 +14,7 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
   const cities = offers.map((offer) => offer.city);
   const cityNames = [...new Set(cities.map((c) => c.name))];
+  const defCity = 'Paris';
 
   const chooseCity = (name: string) => {
     const city = cities.find((c) => c.name === name);
@@ -26,8 +27,8 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
 
   const setInitialCity = () => {
     if (cities.length > 0) {
-      if (cities.find((c) => c.name === 'Paris')) {
-        chooseCity('Paris');
+      if (cities.find((c) => c.name === defCity)) {
+        chooseCity(defCity);
       } else {
         chooseCity(cities[0].name);
       }
@@ -41,6 +42,17 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
   const cityState = useAppSelector(getCity);
   const offersState = useAppSelector(getOffers);
 
+  const locationItemActive = cityNames.map((name,index) => (
+    <li key={`${name}-${index.toString()}`} className="locations__item">
+      <a className={`locations__item-link tabs__item tabs__item${cityState?.name === name ? '--active' : ''}`}
+        onClick={(e) => {e.preventDefault(); chooseCity(name);}}
+        href="/#"
+      >
+        <span>{name}</span>
+      </a>
+    </li>
+  ));
+
   return (
     <div className="page page--gray page--main">
 
@@ -49,13 +61,7 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {cityNames.map((name,index) => (
-                <li key={`${name}-${index.toString()}`} className="locations__item">
-                  <a href="/#" className={`locations__item-link tabs__item tabs__item${cityState?.name === name ? '--active' : ''}`} onClick={(e) => {e.preventDefault(); chooseCity(name);}}>
-                    <span>{name}</span>
-                  </a>
-                </li>
-              ))}
+              {locationItemActive}
             </ul>
           </section>
         </div>
