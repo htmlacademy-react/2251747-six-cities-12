@@ -2,7 +2,7 @@ import {useEffect, useState, MutableRefObject, useRef} from 'react';
 import {Map, TileLayer} from 'leaflet';
 import {City,} from '../types/offers';
 
-function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map | null {
+function useMap(mapRef: MutableRefObject<HTMLElement | null>,city: City | null): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderRef = useRef<boolean>(false);
 
@@ -10,10 +10,10 @@ function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City): Map |
     if (mapRef.current !== null && !isRenderRef.current) {
       const instance = new Map(mapRef.current, {
         center: {
-          lat: city.location.latitude,
-          lng: city.location.longitude,
+          lat: city !== null ? city.location.latitude : 48.8589466,
+          lng: city !== null ? city.location.longitude : 2.2769953,
         },
-        zoom: city.location.zoom,
+        zoom: city !== null ? city.location.zoom : 1,
       });
       const layer = new TileLayer(
         'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
