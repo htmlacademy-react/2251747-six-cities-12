@@ -2,9 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from './components/app/app';
-import {offers} from './moks/offers';
-import {reviews} from './moks/reviews';
+import ErrorMessage from './components/error-message/error-message';
 import { store } from './store';
+import { fetchOffersAction } from './store/api-action';
+
+//store.dispatch(checkAuthAction());
+store.dispatch(fetchOffersAction());
 
 
 const root = ReactDOM.createRoot(
@@ -14,10 +17,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store = {store}>
-      <App
-        offers = {offers}
-        reviews = {reviews}
-      />
+      <ErrorMessage />
+      <App />
     </Provider>
   </React.StrictMode>,
 );

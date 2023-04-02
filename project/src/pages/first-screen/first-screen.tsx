@@ -1,18 +1,19 @@
 import PlaceList from '../../components/place-list/place-list';
-import { Offers } from '../../types/offers';
 import Map from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setCity, setOffers } from '../../store/actions';
+import { setCity} from '../../store/actions';
 import { getCity, getOffers } from '../../store/selectors';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SortList from '../../components/sort-list/sort-list';
+import { Offers } from '../../types/offers';
 
-type FirstScreenProps = {
-  offers: Offers;
-}
-function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
+function FirstScreen(): JSX.Element {
+  const cityState = useAppSelector(getCity);
+  const offersState = useAppSelector(getOffers);
+  const [cityOffers, setCityOffers] = useState<Offers>([]);
+
   const dispatch = useAppDispatch();
-  const cities = offers.map((offer) => offer.city);
+  const cities = offersState.map((offer) => offer.city);
   const cityNames = [...new Set(cities.map((c) => c.name))];
   const defCity = 'Paris';
 
@@ -20,10 +21,20 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
     const city = cities.find((c) => c.name === name);
     if (city) {
       dispatch(setCity(city));
-      const cityOffers = offers.filter((o) => o.city.name === name);
-      dispatch(setOffers(cityOffers));
+      setCityOffers(offersState.filter((o) => o.city.name === name));
     }
   };
+
+  const locationItemActive = cityNames.map((name,index) => (
+    <li key={`${name}-${index.toString()}`} className="locations__item">
+      <a className={`locations__item-link tabs__item tabs__item${cityState?.name === name ? '--active' : ''}`}
+        onClick={(e) => {e.preventDefault(); chooseCity(name);}}
+        href="/#"
+      >
+        <span>{name}</span>
+      </a>
+    </li>
+  ));
 
   const setInitialCity = () => {
     if (cities.length > 0) {
@@ -37,21 +48,7 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
 
   useEffect(() => {
     setInitialCity();
-  }, [offers]);
-
-  const cityState = useAppSelector(getCity);
-  const offersState = useAppSelector(getOffers);
-
-  const locationItemActive = cityNames.map((name,index) => (
-    <li key={`${name}-${index.toString()}`} className="locations__item">
-      <a className={`locations__item-link tabs__item tabs__item${cityState?.name === name ? '--active' : ''}`}
-        onClick={(e) => {e.preventDefault(); chooseCity(name);}}
-        href="/#"
-      >
-        <span>{name}</span>
-      </a>
-    </li>
-  ));
+  }, [offersState]);
 
   return (
     <div className="page page--gray page--main">
@@ -69,17 +66,17 @@ function FirstScreen ({offers}: FirstScreenProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              {cityState && <b className="places__found">{offersState.length} places to stay in {cityState?.name}</b>}
+              {cityState && <b className="places__found">{cityOffers.length} places to stay in {cityState?.name}</b>}
               <SortList/>
               <PlaceList
-                offers={offersState}
+                offers={cityOffers}
                 prefixClass="cities"
               />
             </section>
             <div className="cities__right-section">
               <Map
                 city={cityState}
-                offers={offersState}
+                offers={cityOffers}
               />
             </div>
           </div>

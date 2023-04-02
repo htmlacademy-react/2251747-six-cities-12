@@ -5,6 +5,14 @@ export enum AppRoute {
   Main = '/',
 }
 
+export const TIMEOUT_SHOW_ERROR = 2000;
+
+export enum APIRoute {
+  Offers = '/hotels',
+  Login = '/login',
+  Logout = '/logout'
+}
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
