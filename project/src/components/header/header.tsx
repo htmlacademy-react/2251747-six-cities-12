@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { Offers } from '../../types/offers';
+import { useAppSelector } from '../../hooks';
+import { getOffers } from '../../store/selectors';
 
-type HeaderProps = {
- offers: Offers;
-}
+function Header(): JSX.Element {
+  const offers = useAppSelector(getOffers);
 
-function Header({offers} : HeaderProps): JSX.Element {
   return (
     <div className="container">
       <div className="header__wrapper">

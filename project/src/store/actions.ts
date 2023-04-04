@@ -1,5 +1,6 @@
 
 import {createAction} from '@reduxjs/toolkit';
+import { AuthorizationStatus } from '../const';
 import { City, Offer, Offers } from '../types/offers';
 
 export const ActiveCityAction = {
@@ -21,4 +22,6 @@ export const setOfferId = createAction(ActiveCityAction.SET_OFFER_ID, (offer: Of
 export const setActiveSort = createAction(ActiveCityAction.SET_ACTIVE_SORT, (sort: string) => ({
   payload: sort,
 }));
+export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+export const setError = createAction<string | null>('game/setError');
 

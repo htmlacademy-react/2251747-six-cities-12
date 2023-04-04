@@ -6,39 +6,42 @@ import Favorites from '../../pages/favorites/favorites';
 import Property from '../../pages/property/property';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
-import { Offers } from '../../types/offers';
-import { Reviews } from '../../types/reviews';
 import Header from '../header/header';
+import LoadingScreen from '../../pages/loading/loading';
+import { useAppSelector } from '../../hooks';
 
-type AppScreenProps = {
-  offers: Offers;
-  reviews: Reviews;
-}
+function App(): JSX.Element {
+  const authorizationStatus = useAppSelector<AuthorizationStatus>((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector<boolean>((state) => state.isOffersDataLoading);
 
-function App({offers, reviews}: AppScreenProps): JSX.Element {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <BrowserRouter>
-      <Header offers={offers} />
+      <Header />
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<FirstScreen offers={offers} />}
+          element={<FirstScreen />}
         />
         <Route
           path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus={authorizationStatus}
             >
               <Favorites
-                offers={offers.filter((offer) => offer.isFavorite)}
+                offers={[]}
               />
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Room}
-          element={<Property offers={offers} reviews={reviews}/>}
+          element={<Property offers={[]} reviews={[]}/>}
         />
         <Route
           path={AppRoute.Login}
