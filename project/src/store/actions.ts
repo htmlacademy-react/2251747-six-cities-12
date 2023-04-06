@@ -1,13 +1,23 @@
 
 import {createAction} from '@reduxjs/toolkit';
-import { AuthorizationStatus } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const';
 import { City, Offer, Offers } from '../types/offers';
+import { UserData } from '../types/user';
 
 export const ActiveCityAction = {
   SET_CITY: 'activeCity/setCity',
   SET_OFFERS: 'activeCity/setOffers',
   SET_OFFER_ID: 'activeCity/setOfferId',
   SET_ACTIVE_SORT: 'activeCity/setActiveSort',
+};
+
+export const UserAction = {
+  SET_USER: 'user/setUser',
+  REQUIRE_AUTH: 'user/requireAuthorization'
+};
+
+export const RouteAction = {
+  REDIRECT: 'route/redirectToRoute'
 };
 
 export const setCity = createAction(ActiveCityAction.SET_CITY, (value: City) => ({
@@ -22,6 +32,10 @@ export const setOfferId = createAction(ActiveCityAction.SET_OFFER_ID, (offer: Of
 export const setActiveSort = createAction(ActiveCityAction.SET_ACTIVE_SORT, (sort: string) => ({
   payload: sort,
 }));
-export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
-export const setError = createAction<string | null>('game/setError');
+export const requireAuthorization = createAction<AuthorizationStatus>(UserAction.REQUIRE_AUTH);
+
+export const redirectToRoute = createAction<AppRoute>(RouteAction.REDIRECT);
+export const setUser = createAction(UserAction.SET_USER, (user: UserData) => ({
+  payload: user
+}));
 

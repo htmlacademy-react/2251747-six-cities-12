@@ -1,18 +1,19 @@
 import {createReducer} from '@reduxjs/toolkit';
 import { AuthorizationStatus, SortOptions } from '../const';
 import { City, Offers } from '../types/offers';
-import {requireAuthorization, setActiveSort, setCity, setError, setOfferId, setOffers} from './actions';
+import { UserData } from '../types/user';
+import {requireAuthorization, setActiveSort, setCity, setOfferId, setOffers, setUser} from './actions';
 
 const initialState: {
-  isOffersDataLoading: boolean;city: City | null; offers: Offers; activeOfferId: number | null; activeSort: string; authorizationStatus: AuthorizationStatus; error: string | null;
+  isOffersDataLoading: boolean;city: City | null; offers: Offers; activeOfferId: number | null; activeSort: string; authorizationStatus: AuthorizationStatus; user: UserData | null;
 } = {
   city: null,
   offers: [],
   activeOfferId: null,
   activeSort: SortOptions.Popular,
   authorizationStatus: AuthorizationStatus.NoAuth,
-  error: null,
-  isOffersDataLoading: false
+  isOffersDataLoading: false,
+  user: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -32,8 +33,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
+    .addCase(setUser, (state, action) => {
+      state.user = action.payload;
     });
 });
 
