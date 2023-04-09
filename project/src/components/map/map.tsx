@@ -31,14 +31,21 @@ function Map({city, offers, isProperty}: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      offers.forEach((of: Offer) => {
+      offers.forEach((of: Offer, index) => {
         const marker = new Marker({
           lat: of.location.latitude,
           lng: of.location.longitude,
         });
 
+        let icon;
+        if (isProperty) {
+          icon = index === 0 ? currentCustomIcon : defaultCustomIcon;
+        } else {
+          icon = of.id === offerIdState ? currentCustomIcon : defaultCustomIcon;
+        }
+
         marker
-          .setIcon(of.id === offerIdState ? currentCustomIcon : defaultCustomIcon)
+          .setIcon(icon)
           .addTo(map);
 
       });
