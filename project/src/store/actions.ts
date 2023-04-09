@@ -38,4 +38,3 @@ export const redirectToRoute = createAction<AppRoute>(RouteAction.REDIRECT);
 export const setUser = createAction(UserAction.SET_USER, (user: UserData) => ({
   payload: user
 }));
-

@@ -5,22 +5,39 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import PlaceList from '../../components/place-list/place-list';
+import { api } from '../../store';
+import { APIRoute } from '../../const';
+import { useEffect, useState } from 'react';
 
 type PropertyProps = {
   offers: Offers;
-  reviews: Reviews;
 }
 
-function Property({offers, reviews}: PropertyProps): JSX.Element {
+function Property({offers}: PropertyProps): JSX.Element {
+  const [nearbyOffers, setNearbyOffers] = useState<Offers>([]);
+  const [reviews, setReviews] = useState<Reviews>([]);
   const maxCountImg = 6;
   const { id } = useParams();
+
   const offer = offers.find((of) => of.id === Number(id));
+  useEffect(() => {
+    if (id) {
+      api.get<Reviews>(`${APIRoute.Comments}/${id}`).then((resp) => {
+        setReviews(resp.data);
+      });
+      api.get<Offers>(`${APIRoute.Offers}/${id}/nearby`).then((resp) => {
+        setNearbyOffers(resp.data);
+      });
+    }
+  }, [id]);
+
+
   if (!offer) {
     return NotFoundScreen();
   }
   const {images, isPremium, rating, type, bedrooms, maxAdults, price, goods, host, description, city} = offer;
   const maximages = images?.slice(0, maxCountImg);
-  const offerReviews = id ? reviews[Number(id)] : [];
+
   return (
     <div className="page">
       <main className="page__main page__main--property">
@@ -102,19 +119,19 @@ function Property({offers, reviews}: PropertyProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              <ReviewsList reviews={offerReviews}/>
+              <ReviewsList reviews={reviews} hotelId={Number(id)}/>
             </div>
           </div>
           <Map
             isProperty
             city={city}
-            offers={offers}
+            offers={[offer, ...nearbyOffers]}
           />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <PlaceList offers={offers}
+            <PlaceList offers={nearbyOffers}
               prefixClass="near-places"
             />
           </section>

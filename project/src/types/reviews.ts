@@ -12,6 +12,6 @@ export type Review = {
   date: string;
   comment: string;
 }
-export type Reviews = {
-  [key: number]: Review[];
-};
+
+export type Reviews = Review[];
+
