@@ -4,13 +4,13 @@ import { APIRoute } from '../../const';
 import { api } from '../../store';
 import { Review } from '../../types/reviews';
 
-type CommSubProps = {
+type CommentSubmissionFormProps = {
   hotelId: number;
   newReviewsCB : CallableFunction;
 }
 
-function CommSubForm({hotelId, newReviewsCB} : CommSubProps): JSX.Element {
-  const stars = [5, 4, 3, 2, 1];
+function CommentSubmissionForm({hotelId, newReviewsCB} : CommentSubmissionFormProps): JSX.Element {
+  const stars = new Array(5).fill(5).map((item, index) => item - index);
   const MIN_COMMENTS_LENGTH = 50;
   const MAX_COMMENTS_LENGTH = 300;
   const initialState = {
@@ -70,4 +70,4 @@ function CommSubForm({hotelId, newReviewsCB} : CommSubProps): JSX.Element {
     </form>
   );
 }
-export default CommSubForm;
+export default CommentSubmissionForm;
