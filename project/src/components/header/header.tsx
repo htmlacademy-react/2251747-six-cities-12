@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getOffers } from '../../store/active-city-process/selectors';
 import { logoutAction } from '../../store/api-action';
-import { getAuthStatus, getOffers, getUser } from '../../store/selectors';
+import { getAuthStatus, getUser } from '../../store/user-process/selectors';
 import { UserData } from '../../types/user';
 
 function Header(): JSX.Element {

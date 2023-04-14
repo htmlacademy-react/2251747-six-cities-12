@@ -1,13 +1,16 @@
 import PlaceList from '../../components/place-list/place-list';
 import Map from '../../components/map/map';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setCity} from '../../store/actions';
-import { getCity, getOffers } from '../../store/selectors';
 import { useEffect, useState } from 'react';
 import SortList from '../../components/sort-list/sort-list';
 import { Offers } from '../../types/offers';
+import { getCity, getOffers } from '../../store/active-city-process/selectors';
+import { activeCityState } from '../../store/active-city-process/active.city-state';
+import LoadingScreen from '../loading/loading';
+import { NameSpace } from '../../const';
 
 function FirstScreen(): JSX.Element {
+  const isOffersDataLoading = useAppSelector<boolean>((state) => state[NameSpace.ActiveCity].isOffersDataLoading);
   const cityState = useAppSelector(getCity);
   const offersState = useAppSelector(getOffers);
   const [cityOffers, setCityOffers] = useState<Offers>([]);
@@ -20,7 +23,7 @@ function FirstScreen(): JSX.Element {
   const chooseCity = (name: string) => {
     const city = cities.find((c) => c.name === name);
     if (city) {
-      dispatch(setCity(city));
+      dispatch(activeCityState.actions.setCity(city));
       setCityOffers(offersState.filter((o) => o.city.name === name));
     }
   };
@@ -50,7 +53,7 @@ function FirstScreen(): JSX.Element {
     setInitialCity();
   }, [offersState]);
 
-  return (
+  return isOffersDataLoading ? <LoadingScreen /> : (
     <div className="page page--gray page--main">
 
       <main className="page__main page__main--index">

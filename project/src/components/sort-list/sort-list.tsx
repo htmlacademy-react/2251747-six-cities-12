@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { SortOptions } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setActiveSort } from '../../store/actions';
-import { getActiveSort } from '../../store/selectors';
+import { activeCityState } from '../../store/active-city-process/active.city-state';
+import { getActiveSort } from '../../store/active-city-process/selectors';
 
 function SortList(): JSX.Element {
   const [isSortingOpen, setSortingOpen,] = useState<boolean>(false);
@@ -10,7 +10,7 @@ function SortList(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const selectSort = (sort: string) => {
-    dispatch(setActiveSort(sort));
+    dispatch(activeCityState.actions.setActiveSort(sort));
   };
 
   const activeSort = useAppSelector(getActiveSort);

@@ -1,28 +1,21 @@
 import FirstScreen from '../../pages/first-screen/first-screen';
 import {Route, Routes} from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
 import Favorites from '../../pages/favorites/favorites';
 import Property from '../../pages/property/property';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
 import Header from '../header/header';
-import LoadingScreen from '../../pages/loading/loading';
 import { useAppSelector } from '../../hooks';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import LoginItem from '../login/login-item';
-import { getOffers } from '../../store/selectors';
+import { getOffers } from '../../store/active-city-process/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector<AuthorizationStatus>((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector<boolean>((state) => state.isOffersDataLoading);
+  const authorizationStatus = useAppSelector<AuthorizationStatus>((state) => state[NameSpace.User].authorizationStatus);
   const offers = useAppSelector(getOffers);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
-    return (
-      <LoadingScreen />
-    );
-  }
   return (
     <HistoryRouter history={browserHistory}>
       <Header />

@@ -4,8 +4,8 @@ import useMap from '../../hooks/map';
 import {City, Offer, Offers,} from '../../types/offers';
 import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../const';
 import 'leaflet/dist/leaflet.css';
-import { getOfferId } from '../../store/selectors';
 import { useAppSelector } from '../../hooks';
+import { getOfferId } from '../../store/active-city-process/selectors';
 
 type MapProps = {
  city: City | null;
