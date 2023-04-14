@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import { AuthorizationStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { getAuthStatus } from '../../store/selectors';
+import { getAuthStatus } from '../../store/user-process/selectors';
 import {Review, Reviews} from '../../types/reviews';
-import CommSubForm from '../comment-submission-form/comm-sub-form';
+import CommentSubmissionForm from '../comment-submission-form/comm-sub-form';
 import ReviewItem from '../review-item/review-item';
 
 
@@ -37,7 +37,7 @@ function ReviewsList ({ reviews, hotelId} : ReviewsListProps) : JSX.Element {
         ))}
       </ul>
       {authStatus === AuthorizationStatus.Auth &&
-        <CommSubForm
+        <CommentSubmissionForm
           hotelId={hotelId}
           newReviewsCB={setNewReviews}
         />}

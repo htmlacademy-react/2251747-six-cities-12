@@ -1,7 +1,7 @@
 import { SortOptions } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setOfferId } from '../../store/actions';
-import { getActiveSort } from '../../store/selectors';
+import { activeCityState } from '../../store/active-city-process/active.city-state';
+import { getActiveSort } from '../../store/active-city-process/selectors';
 import {Offer, Offers } from '../../types/offers';
 import PlaceCard from '../place-card/place-card';
 
@@ -14,7 +14,7 @@ function PlaceList ({offers, prefixClass} : PlaceListProps) : JSX.Element {
   let sorted = [...offers];
   const dispatch = useAppDispatch();
   const mouseOverHandler = (offer: Offer) => {
-    dispatch(setOfferId(offer));
+    dispatch(activeCityState.actions.setOfferId(offer.id));
   };
 
   const activeSort = useAppSelector(getActiveSort);

@@ -18,6 +18,11 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum NameSpace {
+  ActiveCity = 'activeCity',
+  User = 'user',
+}
+
 export enum SortOptions {
   Popular = 'Popular',
   LowToHigh = 'Price: low to high',
