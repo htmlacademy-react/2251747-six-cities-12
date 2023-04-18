@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {NameSpace, SortOptions} from '../../const';
 import { City } from '../../types/offers';
 import {ActiveCityState} from '../../types/state';
-import { fetchOffersAction } from '../api-action';
+import { fetchOffersAction, setFavoritesAction } from '../api-action';
 
 const initialState: ActiveCityState = {
   city: null,
@@ -10,6 +10,7 @@ const initialState: ActiveCityState = {
   activeOfferId: null,
   isOffersDataLoading: false,
   activeSort: SortOptions.Popular,
+  hasError: false,
 };
 
 export const activeCityState = createSlice({
@@ -30,6 +31,7 @@ export const activeCityState = createSlice({
     builder
       .addCase(fetchOffersAction.pending, (state) => {
         state.isOffersDataLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.isOffersDataLoading = false;
@@ -37,6 +39,17 @@ export const activeCityState = createSlice({
       })
       .addCase(fetchOffersAction.rejected, (state) => {
         state.isOffersDataLoading = false;
+        state.hasError = true;
+      })
+      .addCase(setFavoritesAction.fulfilled, (state, action) => {
+        const offers = state.offers.map((offer) => {
+          if (offer.id === action.payload.id) {
+            return action.payload;
+          } else {
+            return offer;
+          }
+        });
+        state.offers = offers;
       });
   }
 });

@@ -3,7 +3,7 @@ import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AppRoute,} from '../const';
-import { Offers } from '../types/offers.js';
+import { Offer, Offers } from '../types/offers.js';
 import { UserData } from '../types/user.js';
 import { AuthData } from '../types/auth-data.js';
 
@@ -14,6 +14,10 @@ type ThunkShape = {
   state: State;
   extra: AxiosInstance;
 }
+type FavoriteParams = {
+  id: number;
+  status: number;
+};
 
 export const fetchOffersAction = createAsyncThunk<Offers, undefined, ThunkShape>(
   'data/fetchOffers',
@@ -47,3 +51,12 @@ export const logoutAction = createAsyncThunk<void, undefined, ThunkShape>(
     dropToken();
   },
 );
+
+export const setFavoritesAction = createAsyncThunk<Offer, FavoriteParams, ThunkShape
+ >(
+   'favorite/setFavorite',
+   async({id, status}, {dispatch, extra: api}) => {
+     const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/${status}`);
+     return data;
+   }
+ );

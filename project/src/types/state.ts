@@ -18,4 +18,5 @@ export type ActiveCityState = {
   isOffersDataLoading: boolean;
   activeOfferId: number | null;
   activeSort: string;
+  hasError: boolean;
 };

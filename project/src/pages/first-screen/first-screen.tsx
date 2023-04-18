@@ -4,19 +4,25 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect, useState } from 'react';
 import SortList from '../../components/sort-list/sort-list';
 import { Offers } from '../../types/offers';
-import { getCity, getOffers } from '../../store/active-city-process/selectors';
+import { getCity } from '../../store/active-city-process/selectors';
 import { activeCityState } from '../../store/active-city-process/active.city-state';
 import LoadingScreen from '../loading/loading';
 import { NameSpace } from '../../const';
+import { getErrorStatus } from '../../store/user-process/selectors';
+import MainEmpty from '../../components/main-empty/main-empty';
 
-function FirstScreen(): JSX.Element {
+type FirstScreenProps = {
+  offers: Offers;
+}
+
+function FirstScreen({offers}: FirstScreenProps): JSX.Element {
   const isOffersDataLoading = useAppSelector<boolean>((state) => state[NameSpace.ActiveCity].isOffersDataLoading);
   const cityState = useAppSelector(getCity);
-  const offersState = useAppSelector(getOffers);
   const [cityOffers, setCityOffers] = useState<Offers>([]);
+  const hasError = useAppSelector(getErrorStatus);
 
   const dispatch = useAppDispatch();
-  const cities = offersState.map((offer) => offer.city);
+  const cities = offers.map((offer) => offer.city);
   const cityNames = [...new Set(cities.map((c) => c.name))];
   const defCity = 'Paris';
 
@@ -24,7 +30,7 @@ function FirstScreen(): JSX.Element {
     const city = cities.find((c) => c.name === name);
     if (city) {
       dispatch(activeCityState.actions.setCity(city));
-      setCityOffers(offersState.filter((o) => o.city.name === name));
+      setCityOffers(offers.filter((o) => o.city.name === name));
     }
   };
 
@@ -51,7 +57,11 @@ function FirstScreen(): JSX.Element {
 
   useEffect(() => {
     setInitialCity();
-  }, [offersState]);
+  }, [offers]);
+
+  if (hasError || offers.length === 0) {
+    return <MainEmpty />;
+  }
 
   return isOffersDataLoading ? <LoadingScreen /> : (
     <div className="page page--gray page--main">
