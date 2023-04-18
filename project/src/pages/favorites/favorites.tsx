@@ -1,13 +1,22 @@
+import { useEffect, useState } from 'react';
 import PlaceCard from '../../components/place-card/place-card';
 import { Offers } from '../../types/offers';
+import FavoriteEmptyScreen from './favorites-empty';
 
 type FavoritesProps = {
   offers: Offers;
 }
 
-function Favorites({offers} : FavoritesProps): JSX.Element {
-  const cities = [...new Set(offers.map((offer) => offer.city.name))];
-  return (
+function Favorites({offers}: FavoritesProps): JSX.Element {
+  const [favorites, setFavorites] = useState<Offers>([]);
+  const [cities, setCities] = useState<string[]>([]);
+  useEffect(() => {
+    const favoriteArray = offers.filter((offer) => offer.isFavorite);
+    setFavorites(favoriteArray);
+    const citiesArray: string[] = [...new Set(favoriteArray.map((offer) => offer.city.name))];
+    setCities(citiesArray);
+  }, [offers]);
+  return favorites.length === 0 ? <FavoriteEmptyScreen/> : (
     <div className="page">
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
@@ -24,7 +33,7 @@ function Favorites({offers} : FavoritesProps): JSX.Element {
                     </div>
                   </div>
                   <div className="favorites__places">
-                    {offers.filter((offer) => offer.city.name === city).map((offer) => (
+                    {favorites.filter((offer) => offer.city.name === city).map((offer) => (
                       <PlaceCard
                         offer={offer}
                         key={offer.id}

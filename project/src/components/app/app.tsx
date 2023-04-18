@@ -30,7 +30,7 @@ function App(): JSX.Element {
             <PrivateRoute
               authorizationStatus={authorizationStatus}
             >
-              <FirstScreen />
+              <FirstScreen offers={offers}/>
             </PrivateRoute>
           }
         />
@@ -40,9 +40,7 @@ function App(): JSX.Element {
             <PrivateRoute
               authorizationStatus={authorizationStatus}
             >
-              <Favorites
-                offers={offers}
-              />
+              <Favorites offers={offers}/>
             </PrivateRoute>
           }
         />
