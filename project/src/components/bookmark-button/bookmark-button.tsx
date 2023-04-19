@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setFavoritesAction } from '../../store/api-action';
 import { getAuthStatus } from '../../store/user-process/selectors';
 import { Offer } from '../../types/offers';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type BookmarkButtonProps = {
   offer: Offer;
@@ -20,6 +22,7 @@ function BookmarkButton ({offer, prefixClass}: BookmarkButtonProps): JSX.Element
         status: Number(!offer.isFavorite)
       }));
     } else {
+      toast('You need to login to save favorites');
       navigate(AppRoute.Login);
     }
   };

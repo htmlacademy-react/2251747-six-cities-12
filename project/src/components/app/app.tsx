@@ -27,11 +27,7 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.Main}
           element={
-            <PrivateRoute
-              authorizationStatus={authorizationStatus}
-            >
-              <FirstScreen offers={offers}/>
-            </PrivateRoute>
+            <FirstScreen offers={offers}/>
           }
         />
         <Route
