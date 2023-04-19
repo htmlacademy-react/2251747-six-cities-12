@@ -2,10 +2,13 @@ import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-action';
 import { AuthData } from '../../types/auth-data';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginItem(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 
   const dispatch = useAppDispatch();
 
@@ -17,10 +20,14 @@ function LoginItem(): JSX.Element {
     evt.preventDefault();
 
     if (loginRef.current !== null && passwordRef.current !== null) {
-      onSubmit({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
-      });
+      if (regex.test(passwordRef.current.value)) {
+        onSubmit({
+          login: loginRef.current.value,
+          password: passwordRef.current.value,
+        });
+      } else {
+        toast('Password has to contain at least 1 character and 1 number');
+      }
     }
   };
 
@@ -40,7 +47,7 @@ function LoginItem(): JSX.Element {
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
-                <input className="login__input form__input" ref={passwordRef} type="password" minLength={1} name="password" placeholder="Password" required={false}/>
+                <input className="login__input form__input" ref={passwordRef} type="password" minLength={2} name="password" placeholder="Password" required={false}/>
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
