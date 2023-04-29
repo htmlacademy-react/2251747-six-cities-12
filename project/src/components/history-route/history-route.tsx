@@ -7,8 +7,7 @@ export interface HistoryRouterProps {
    basename?: string;
    children?: React.ReactNode;
  }
-
-function HistoryRouter({
+export default function HistoryRouter({
   basename,
   children,
   history,
@@ -32,4 +31,3 @@ function HistoryRouter({
   );
 }
 
-export default HistoryRouter;

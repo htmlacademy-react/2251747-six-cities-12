@@ -14,7 +14,7 @@ type ThunkShape = {
   state: State;
   extra: AxiosInstance;
 }
-type FavoriteParams = {
+export type FavoriteParams = {
   id: number;
   status: number;
 };

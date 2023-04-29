@@ -3,7 +3,7 @@ import {createAPI} from '../services/api';
 import { redirect } from './middlewares/redirect';
 import { NameSpace } from '../const';
 import { userProcess } from './user-process/user-process';
-import { activeCityState } from './active-city-process/active.city-state';
+import { activeCityState } from './active-city-process/active-city-state';
 
 export const api = createAPI();
 

@@ -10,14 +10,16 @@ type FavoritesProps = {
 function Favorites({offers}: FavoritesProps): JSX.Element {
   const [favorites, setFavorites] = useState<Offers>([]);
   const [cities, setCities] = useState<string[]>([]);
+
   useEffect(() => {
     const favoriteArray = offers.filter((offer) => offer.isFavorite);
     setFavorites(favoriteArray);
     const citiesArray: string[] = [...new Set(favoriteArray.map((offer) => offer.city.name))];
     setCities(citiesArray);
   }, [offers]);
+
   return favorites.length === 0 ? <FavoriteEmptyScreen/> : (
-    <div className="page">
+    <div className="page" data-testid='favoritesPage'>
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">

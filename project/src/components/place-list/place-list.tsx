@@ -1,6 +1,6 @@
 import { SortOptions } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { activeCityState } from '../../store/active-city-process/active.city-state';
+import { activeCityState } from '../../store/active-city-process/active-city-state';
 import { getActiveSort } from '../../store/active-city-process/selectors';
 import {Offer, Offers } from '../../types/offers';
 import PlaceCard from '../place-card/place-card';

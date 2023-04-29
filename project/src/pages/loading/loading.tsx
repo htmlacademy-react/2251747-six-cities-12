@@ -8,6 +8,7 @@ export const LoadingScreen = () => (
   }}className="flex justify-center items-center "
   >
     <Rings color="#00BFFF" height={500} width={180} />
+    <h2>Loading...</h2>
   </div>
 );
 

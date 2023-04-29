@@ -16,6 +16,7 @@ type PropertyProps = {
 function Property({offers}: PropertyProps): JSX.Element {
   const [nearbyOffers, setNearbyOffers] = useState<Offers>([]);
   const [reviews, setReviews] = useState<Reviews>([]);
+
   const maxCountImg = 6;
   const { id } = useParams();
 
@@ -39,7 +40,7 @@ function Property({offers}: PropertyProps): JSX.Element {
   const maximages = images?.slice(0, maxCountImg);
 
   return (
-    <div className="page">
+    <div className="page" data-testid='propertyPage'>
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
