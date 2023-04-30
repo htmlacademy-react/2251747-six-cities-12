@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SortOptions } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { activeCityState } from '../../store/active-city-process/active.city-state';
+import { activeCityState } from '../../store/active-city-process/active-city-state';
 import { getActiveSort } from '../../store/active-city-process/selectors';
 
 function SortList(): JSX.Element {

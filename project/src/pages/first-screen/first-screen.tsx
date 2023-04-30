@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import SortList from '../../components/sort-list/sort-list';
 import { Offers } from '../../types/offers';
 import { getCity } from '../../store/active-city-process/selectors';
-import { activeCityState } from '../../store/active-city-process/active.city-state';
+import { activeCityState } from '../../store/active-city-process/active-city-state';
 import LoadingScreen from '../loading/loading';
 import { NameSpace } from '../../const';
 import { getErrorStatus } from '../../store/user-process/selectors';
@@ -64,7 +64,7 @@ function FirstScreen({offers}: FirstScreenProps): JSX.Element {
   }
 
   return isOffersDataLoading ? <LoadingScreen /> : (
-    <div className="page page--gray page--main">
+    <div className="page page--gray page--main" data-testid='mainPage'>
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>

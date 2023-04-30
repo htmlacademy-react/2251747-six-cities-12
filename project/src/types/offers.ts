@@ -1,4 +1,4 @@
-type Host = {
+export type Host = {
   avatarUrl: string;
   name: string;
   isPro: boolean;
