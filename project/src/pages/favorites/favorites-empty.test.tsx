@@ -12,6 +12,6 @@ describe('Copmonent FavoriteEmptyScreen', () => {
       </HistoryRouter>,
     );
 
-    expect(screen.getByText(/Nothing yet saved./i)).toBeInTheDocument();
+    expect(screen.getByText('Nothing yet saved.')).toBeInTheDocument();
   });
 });
